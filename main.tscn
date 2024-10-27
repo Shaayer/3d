@@ -1,0 +1,87 @@
+[gd_scene load_steps=15 format=3 uid="uid://bcv7ajbc72wl"]
+
+[ext_resource type="Texture2D" uid="uid://dj7lyu8l0hfxc" path="res://Sky.png" id="1_lci6w"]
+[ext_resource type="Script" path="res://character_body_3d.gd" id="1_ll04o"]
+[ext_resource type="Texture2D" uid="uid://lxngaykvwrrt" path="res://White.png" id="1_y6qpv"]
+[ext_resource type="Script" path="res://gimbal.gd" id="2_wsi7h"]
+[ext_resource type="PackedScene" uid="uid://4yc2dpur5bhe" path="res://bullet.tscn" id="5_hclcv"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_s0ulv"]
+panorama = ExtResource("1_lci6w")
+
+[sub_resource type="Sky" id="Sky_wkt5y"]
+sky_material = SubResource("PanoramaSkyMaterial_s0ulv")
+
+[sub_resource type="Environment" id="Environment_elcsq"]
+background_mode = 2
+sky = SubResource("Sky_wkt5y")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_d3aah"]
+size = Vector3(100, 1, 100)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_j2xj4"]
+albedo_color = Color(0.631373, 0.929412, 1, 1)
+albedo_texture = ExtResource("1_y6qpv")
+uv1_triplanar = true
+texture_filter = 5
+
+[sub_resource type="BoxMesh" id="BoxMesh_halqy"]
+material = SubResource("StandardMaterial3D_j2xj4")
+size = Vector3(100, 1, 100)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0l75c"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_y38vn"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_bma5t"]
+size = Vector3(0.25, 0.25, 1)
+
+[node name="Main" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_elcsq")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.132804, -0.832865, -0.537306, 0.811011, -0.220317, 0.541962, -0.569759, -0.507736, 0.646204, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Floor" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.751792, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_d3aah")
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+mesh = SubResource("BoxMesh_halqy")
+metadata/_edit_lock_ = true
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03258, 0)
+script = ExtResource("1_ll04o")
+
+[node name="Gimbal" type="Node3D" parent="CharacterBody3D"]
+script = ExtResource("2_wsi7h")
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Gimbal"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
+current = true
+metadata/_edit_lock_ = true
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_0l75c")
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+mesh = SubResource("CapsuleMesh_y38vn")
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="CharacterBody3D/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.37612, 0.0567676, -0.802898)
+mesh = SubResource("BoxMesh_bma5t")
+skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, 0)
+
+[node name="Bullet" parent="." instance=ExtResource("5_hclcv")]
