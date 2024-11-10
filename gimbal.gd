@@ -17,7 +17,7 @@ func _process(delta: float) -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseMotion && mouseShow==-1:
-		print(event.relative)
+		#print(event.relative)
 		rotation.y+=-event.relative.x*0.001
 		$Camera3D.rotation.x+=-event.relative.y*0.001
 		if $Camera3D.rotation.x<-PI/2:
