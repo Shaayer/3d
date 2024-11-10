@@ -21,7 +21,7 @@ func _process(delta: float) -> void:
 		_on_body_entered(null)
 		return
 	
-	velocityZ+=delta
+	velocityZ+=delta*0.5
 	if velocityZ>=0:
 		finished=true
 	if finished==true:

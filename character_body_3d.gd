@@ -1,6 +1,7 @@
 extends CharacterBody3D
 
 @onready var gun_tip: Marker3D = $Person/Gun/GunTip
+@onready var aim_position: Marker3D = $Gimbal/Camera3D/AimPosition
 
 @onready var gimbal: Node3D = $Gimbal
 const SPEED = 5.0
@@ -17,6 +18,8 @@ func _physics_process(delta: float) -> void:
 	# Add the gravity.
 	if not is_on_floor():
 		velocity += get_gravity() * delta
+	
+	gun.look_at(aim_position.global_position)
 	
 	# Handle jump.
 	if Input.is_action_just_pressed("space") and is_on_floor():
