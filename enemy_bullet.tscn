@@ -1,0 +1,20 @@
+[gd_scene load_steps=5 format=3 uid="uid://baoy4rk6smswm"]
+
+[ext_resource type="PackedScene" uid="uid://4yc2dpur5bhe" path="res://bullet.tscn" id="1_pccfd"]
+[ext_resource type="Script" path="res://enemy_bullet.gd" id="2_sh7y0"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_l0tco"]
+albedo_color = Color(0, 0.463131, 0.463131, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_1mw8a"]
+material = SubResource("StandardMaterial3D_l0tco")
+radius = 0.1
+height = 0.2
+
+[node name="EnemyBullet" instance=ExtResource("1_pccfd")]
+collision_layer = 2
+collision_mask = 3
+script = ExtResource("2_sh7y0")
+
+[node name="MeshInstance3D" parent="." index="1"]
+mesh = SubResource("SphereMesh_1mw8a")

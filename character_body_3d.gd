@@ -44,7 +44,6 @@ func _physics_process(delta: float) -> void:
 		
 		get_parent().add_child(bullet)
 		bullet.global_position=gun_tip.global_position
-		print(bullet.global_position)
 		bullet.global_rotation=gun.global_rotation
 
 	move_and_slide()

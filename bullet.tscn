@@ -10,6 +10,7 @@ radius = 0.1
 height = 0.2
 
 [node name="Bullet" type="Area3D"]
+collision_mask = 5
 script = ExtResource("1_p6map")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]

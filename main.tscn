@@ -1,13 +1,12 @@
-[gd_scene load_steps=23 format=3 uid="uid://bcv7ajbc72wl"]
+[gd_scene load_steps=17 format=3 uid="uid://bcv7ajbc72wl"]
 
 [ext_resource type="Texture2D" uid="uid://dj7lyu8l0hfxc" path="res://Sky.png" id="1_lci6w"]
-[ext_resource type="Script" path="res://character_body_3d.gd" id="1_ll04o"]
 [ext_resource type="Script" path="res://main.gd" id="1_m01sk"]
 [ext_resource type="Texture2D" uid="uid://lxngaykvwrrt" path="res://White.png" id="1_y6qpv"]
-[ext_resource type="Script" path="res://gimbal.gd" id="2_wsi7h"]
+[ext_resource type="PackedScene" uid="uid://hwtw5lvh80qa" path="res://player.tscn" id="4_440ov"]
 [ext_resource type="PackedScene" uid="uid://4yc2dpur5bhe" path="res://bullet.tscn" id="5_hclcv"]
 [ext_resource type="Script" path="res://collision_shape_3d.gd" id="7_chabw"]
-[ext_resource type="Script" path="res://enemy.gd" id="8_yfqae"]
+[ext_resource type="PackedScene" uid="uid://ctm4a3nad8gt0" path="res://enemy.tscn" id="7_ewsmx"]
 
 [sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_s0ulv"]
 panorama = ExtResource("1_lci6w")
@@ -32,13 +31,6 @@ texture_filter = 5
 material = SubResource("StandardMaterial3D_j2xj4")
 size = Vector3(100, 1, 100)
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0l75c"]
-
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_y38vn"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_bma5t"]
-size = Vector3(0.25, 0.25, 1)
-
 [sub_resource type="BoxShape3D" id="BoxShape3D_8m2jr"]
 size = Vector3(1, 100, 1)
 
@@ -49,12 +41,6 @@ albedo_color = Color(1, 1, 1, 0.321569)
 [sub_resource type="BoxMesh" id="BoxMesh_ava12"]
 material = SubResource("StandardMaterial3D_ju1en")
 size = Vector3(1, 100, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_ts1mi"]
-size = Vector3(0.5, 2, 0.5)
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_hcgyn"]
-size = Vector3(0.5, 2, 0.5)
 
 [node name="Main" type="Node3D"]
 script = ExtResource("1_m01sk")
@@ -77,38 +63,7 @@ metadata/_edit_lock_ = true
 mesh = SubResource("BoxMesh_halqy")
 metadata/_edit_lock_ = true
 
-[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.03258, 0)
-collision_layer = 2
-collision_mask = 3
-script = ExtResource("1_ll04o")
-
-[node name="Gimbal" type="Node3D" parent="CharacterBody3D"]
-script = ExtResource("2_wsi7h")
-
-[node name="Camera3D" type="Camera3D" parent="CharacterBody3D/Gimbal"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4, 0)
-current = true
-metadata/_edit_lock_ = true
-
-[node name="AimPosition" type="Marker3D" parent="CharacterBody3D/Gimbal/Camera3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -100)
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
-shape = SubResource("CapsuleShape3D_0l75c")
-metadata/_edit_lock_ = true
-
-[node name="Person" type="MeshInstance3D" parent="CharacterBody3D"]
-mesh = SubResource("CapsuleMesh_y38vn")
-metadata/_edit_lock_ = true
-
-[node name="Gun" type="MeshInstance3D" parent="CharacterBody3D/Person"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.37612, 0.0567676, -0.802898)
-mesh = SubResource("BoxMesh_bma5t")
-skeleton = NodePath("../..")
-
-[node name="GunTip" type="Marker3D" parent="CharacterBody3D/Person/Gun"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.9)
+[node name="Player" parent="." instance=ExtResource("4_440ov")]
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, 0)
@@ -128,15 +83,14 @@ metadata/_edit_lock_ = true
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody"]
 mesh = SubResource("BoxMesh_ava12")
 
-[node name="Enemy" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 16.5031, 0.763625, 17.8056)
-script = ExtResource("8_yfqae")
+[node name="Enemy" parent="." instance=ExtResource("7_ewsmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.84853, -0.251792, 26.1447)
 
-[node name="EnemyMesh" type="MeshInstance3D" parent="Enemy"]
-mesh = SubResource("BoxMesh_ts1mi")
-skeleton = NodePath("../EnemyShape")
-metadata/_edit_lock_ = true
+[node name="Enemy2" parent="." instance=ExtResource("7_ewsmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -31.4936, -0.251792, -32.6979)
 
-[node name="EnemyShape" type="CollisionShape3D" parent="Enemy"]
-shape = SubResource("BoxShape3D_hcgyn")
-metadata/_edit_lock_ = true
+[node name="Enemy3" parent="." instance=ExtResource("7_ewsmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 33.7689, -0.251792, -35.3168)
+
+[node name="Enemy4" parent="." instance=ExtResource("7_ewsmx")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33.9745, -0.251792, -25.8276)

@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://ctm4a3nad8gt0"]
+
+[ext_resource type="Script" path="res://enemy.gd" id="1_mcafa"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_bma5t"]
+size = Vector3(0.25, 0.25, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_ts1mi"]
+size = Vector3(0.5, 2, 0.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hcgyn"]
+size = Vector3(0.5, 2, 0.5)
+
+[node name="Enemy" type="RigidBody3D"]
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_mcafa")
+
+[node name="EnemyGun" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.335611)
+mesh = SubResource("BoxMesh_bma5t")
+skeleton = NodePath("../../Player")
+
+[node name="GunTip" type="Marker3D" parent="EnemyGun"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.9)
+
+[node name="EnemyMesh" type="MeshInstance3D" parent="."]
+mesh = SubResource("BoxMesh_ts1mi")
+skeleton = NodePath("../EnemyShape")
+metadata/_edit_lock_ = true
+
+[node name="EnemyShape" type="CollisionShape3D" parent="."]
+shape = SubResource("BoxShape3D_hcgyn")
+metadata/_edit_lock_ = true
